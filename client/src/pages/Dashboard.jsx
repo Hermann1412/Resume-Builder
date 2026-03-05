@@ -47,15 +47,15 @@ const Dashboard = () => {
   };
 
   const editTitle = async (event) => {
-    event.preventDefault()
-  }
+    event.preventDefault();
+  };
 
   const deleteResume = async (resumeId) => {
-    const confirm = window.confirm('Are you sure want to delete this resume?')
-    if(confirm){
-      setAllResumes(prev.filter(resume => resume._id !== resumeId))
+    const confirm = window.confirm("Are you sure want to delete this resume?");
+    if (confirm) {
+      setAllResumes(prev.filter((resume) => resume._id !== resumeId));
     }
-  }
+  };
 
   useEffect(() => {
     loadAllResumes();
@@ -100,7 +100,8 @@ const Dashboard = () => {
 
             return (
               <button
-                key={index} onClick={()=> navigate(`/app/builder/${resume._id}`)}
+                key={index}
+                onClick={() => navigate(`/app/builder/${resume._id}`)}
                 className="relative w-full sm:max-w-36 h-48 flex flex-col items-center justify-center rounded-lg gap-2 border group hover:shadow-lg transition-all duration-300 cursor-pointer"
                 style={{
                   background: `linear-gradient(135deg, ${baseColor}10, ${baseColor}40)`,
@@ -126,12 +127,20 @@ const Dashboard = () => {
                   Updated on {new Date(resume.updatedAt).toLocaleDateString()}
                 </p>
 
-                <div onClick={e=> e.stopPropagation()} className="absolute top-1 right-1 group-hover:flex items-center hidden">
-                  <TrashIcon onClick={()=> deleteResume(resume._id)}
+                <div
+                  onClick={(e) => e.stopPropagation()}
+                  className="absolute top-1 right-1 group-hover:flex items-center hidden"
+                >
+                  <TrashIcon
+                    onClick={() => deleteResume(resume._id)}
                     className="size-7 p-1.5 hover:bg-white/50 rounded transition-colors"
                     style={{ color: baseColor + "90" }}
                   />
-                  <PencilIcon onClick={()=> {setEditResumeId(resume._id); setTitle(resume.title)}}
+                  <PencilIcon
+                    onClick={() => {
+                      setEditResumeId(resume._id);
+                      setTitle(resume.title);
+                    }}
                     className="size-7 p-1.5 hover:bg-white/50 rounded transition-colors"
                     style={{ color: baseColor + "90" }}
                   />
@@ -259,7 +268,7 @@ const Dashboard = () => {
               <XIcon
                 className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 cursor-pointer transition-colors"
                 onClick={() => {
-                  setEditResumeId('');
+                  setEditResumeId("");
                   setTitle("");
                 }}
               />
