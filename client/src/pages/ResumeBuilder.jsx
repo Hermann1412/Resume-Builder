@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { dummyResumeData } from "../assets/assets";
 import { ArrowLeftIcon, Briefcase, FileText, FolderIcon, GraduationCap, Icon, Sparkle, User, ChevronLeft, ChevronRight } from "lucide-react";
 import PersonnalInfoForm from "../components/PersonalInfoForm";
+import ResumePreview from "../components/resumePreview";
 
 
 const ResumeBuilder = () => {
@@ -99,7 +100,14 @@ const ResumeBuilder = () => {
           </div>
 
           {/*Right Panel - Preview */}
-          <div></div>
+          <div className="lg:col-span-7 max-lg:mt-6 flex justify-center">
+            <div>
+              {/* ---buttons --- */}
+            </div>
+
+            <ResumePreview data={resumeData} template={resumeData.template} accentColor={resumeData.accent_color}/>
+
+          </div>
         </div>
 
       </div>
