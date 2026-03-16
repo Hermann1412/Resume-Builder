@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {act, useEffect, useState} from "react";
 import { Link, useParams } from "react-router-dom";
 import { dummyResumeData } from "../assets/assets";
 import { ArrowLeftIcon, Briefcase, FileText, FolderIcon, GraduationCap, Icon, Sparkle, User, ChevronLeft, ChevronRight } from "lucide-react";
@@ -7,6 +7,7 @@ import ResumePreview from "../components/resumePreview";
 import TemplateSelector from "../components/TemplateSelector";
 import ColorPicker from "../components/ColorPicker";
 import ProfessionalSummaryForm from "../components/ProfessionalSummaryForm";
+import ExperienceForm from "../components/ExperienceForm";
 
 
 
@@ -103,6 +104,9 @@ const ResumeBuilder = () => {
                 )}
                 {activeSection.id === "summary" && (
                   <ProfessionalSummaryForm data={resumeData.professonal_summary} onChange={(data) => setResumeData(prev => ({...prev, professonal_summary: data}))}/>
+                )}
+                {activeSection.id === "experience" && (
+                  <ExperienceForm data={resumeData.experience} onChange={(data) => setResumeData(prev => ({...prev, experience: data}))}/>
                 )}
                 {/* other sections like experience, education, projects, skills would go here */}
               </div>
