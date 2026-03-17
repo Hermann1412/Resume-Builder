@@ -142,7 +142,7 @@ const ExperienceForm = ({ data, onChange }) => {
                   onChange={(e) =>
                     updateExperience(index, "description", e.target.value)
                   }
-                  className="w-full text-sm px-3 py-3 py-2 rounded-lg resize-none"
+                  className="w-full text-sm px-3 py-2 rounded-lg resize-none"
                   placeholder="Describe your key responsibilities and achievements ..."
                 ></textarea>
               </div>
