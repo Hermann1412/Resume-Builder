@@ -1,7 +1,17 @@
-import React, {act, useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { dummyResumeData } from "../assets/assets";
-import { ArrowLeftIcon, Briefcase, FileText, FolderIcon, GraduationCap, Icon, Sparkle, User, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  ArrowLeftIcon,
+  Briefcase,
+  FileText,
+  FolderIcon,
+  GraduationCap,
+  Sparkles,
+  User,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import PersonnalInfoForm from "../components/PersonalInfoForm";
 import ResumePreview from "../components/resumePreview";
 import TemplateSelector from "../components/TemplateSelector";
@@ -9,6 +19,8 @@ import ColorPicker from "../components/ColorPicker";
 import ProfessionalSummaryForm from "../components/ProfessionalSummaryForm";
 import ExperienceForm from "../components/ExperienceForm";
 import EducationForm from "../components/EducationForm";
+import ProjectForm from "../components/ProjectForm";
+import SkillsForm from "../components/SkillsForm";
 
 
 const ResumeBuilder = () => {
@@ -17,44 +29,53 @@ const ResumeBuilder = () => {
 
 
   const [resumeData, setResumeData] = useState({
-    _id:'',
-    title: '',
+    _id: "",
+    title: "",
     personal_info: {},
-    professonal_summary: "",
+    professional_summary: "",
     experience: [],
     education: [],
-    project: [],
+    projects: [],
     skills: [],
     template: "classic",
-    accent_color:"#3b82f6",
+    accent_color: "#3b82f6",
     public: false,
-  })
+  });
 
   const loadExistingResume = async () => {
-    const resume = dummyResumeData.find(resume => resume._id === resumeId)
-    if(resume){
-      setResumeData(resume)
-      document.title = resume.title
+    const resume = dummyResumeData.find((item) => item._id === resumeId);
+    if (resume) {
+      setResumeData((prev) => ({
+        ...prev,
+        ...resume,
+        professional_summary:
+          resume.professional_summary || resume.professonal_summary || "",
+        projects: resume.projects || resume.project || [],
+        experience: resume.experience || [],
+        education: resume.education || [],
+        skills: resume.skills || [],
+      }));
+      document.title = resume.title;
     }
-  }
+  };
 
-  const [activeSectionIndex, setActiveSectionIndex] = useState(0)
-  const [removeBackground, setRemoveBackground] = useState(false)
+  const [activeSectionIndex, setActiveSectionIndex] = useState(0);
+  const [removeBackground, setRemoveBackground] = useState(false);
 
   const sections = [
-    {id: "personal", name: "Personal Info", icon: User},
-    {id: "summary", name: "Summary", icon: FileText},
-    {id: "experience", name: "Experience", icon: Briefcase},
-    {id: "education", name: "Education", icon: GraduationCap},
-    {id: "project", name: "Projects", icon: FolderIcon},
-    {id: "skills", name: "Skills", icon: Sparkle},
-  ]
+    { id: "personal", name: "Personal Info", icon: User },
+    { id: "summary", name: "Summary", icon: FileText },
+    { id: "experience", name: "Experience", icon: Briefcase },
+    { id: "education", name: "Education", icon: GraduationCap },
+    { id: "projects", name: "Projects", icon: FolderIcon },
+    { id: "skills", name: "Skills", icon: Sparkles },
+  ];
 
-  const activeSection = sections[activeSectionIndex]
+  const activeSection = sections[activeSectionIndex];
 
   useEffect(() => {
-    loadExistingResume()
-  },[])
+    loadExistingResume();
+  }, [resumeId]);
 
   return (
     <div>
@@ -72,7 +93,7 @@ const ResumeBuilder = () => {
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-1 pt-1">
               {/*progress bar using activeSectionIndex*/}
               <hr className="absolute top-0 left-0 right-0 border-2 border-gray-200"/>
-              <hr className="absolute top-0 left-0 h-1 bg-gradient-to-r from-green-600 border-none transition-all duration-2000" style={{width: `${activeSectionIndex * 100 / (sections.length - 1)}%`}}/>
+              <hr className="absolute top-0 left-0 h-1 bg-linear-to-r from-green-600 border-none transition-all duration-2000" style={{width: `${activeSectionIndex * 100 / (sections.length - 1)}%`}}/>
 
               {/* Section Navigation*/}
               <div className="flex justify-between items-center mb-6 border-b border-gray-200 py-1">
@@ -103,7 +124,15 @@ const ResumeBuilder = () => {
                   <PersonnalInfoForm data={resumeData.personal_info} onChange={(data) => setResumeData(prev => ({...prev,personal_info: data}))} removeBackground={removeBackground} setRemoveBackground={setRemoveBackground}/>
                 )}
                 {activeSection.id === "summary" && (
-                  <ProfessionalSummaryForm data={resumeData.professonal_summary} onChange={(data) => setResumeData(prev => ({...prev, professonal_summary: data}))}/>
+                  <ProfessionalSummaryForm
+                    data={resumeData.professional_summary}
+                    onChange={(data) =>
+                      setResumeData((prev) => ({
+                        ...prev,
+                        professional_summary: data,
+                      }))
+                    }
+                  />
                 )}
                 {activeSection.id === "experience" && (
                   <ExperienceForm data={resumeData.experience} onChange={(data) => setResumeData(prev => ({...prev, experience: data}))}/>
@@ -111,7 +140,17 @@ const ResumeBuilder = () => {
                  {activeSection.id === "education" && (
                   <EducationForm data={resumeData.education} onChange={(data) => setResumeData(prev => ({...prev, education: data}))}/>
                 )}
-                {/* other sections like experience, education, projects, skills would go here */}
+                {activeSection.id === "projects" && (
+                  <ProjectForm data={resumeData.projects} onChange={(data) => setResumeData(prev => ({...prev, projects: data}))}/>
+                )}
+                {activeSection.id === "skills" && (
+                  <SkillsForm
+                    data={resumeData.skills}
+                    onChange={(data) =>
+                      setResumeData((prev) => ({ ...prev, skills: data }))
+                    }
+                  />
+                )}
               </div>
 
             </div>
