@@ -3,12 +3,13 @@ import React, { useState } from "react";
 
 const SkillsForm = ({ data = [], onChange }) => {
   const [skillInput, setSkillInput] = useState("");
+  const skills = Array.isArray(data) ? data : [];
 
   const addSkill = () => {
     const value = skillInput.trim();
     if (!value) return;
 
-    const alreadyExists = data.some(
+    const alreadyExists = skills.some(
       (skill) => skill.toLowerCase() === value.toLowerCase(),
     );
     if (alreadyExists) {
@@ -16,13 +17,13 @@ const SkillsForm = ({ data = [], onChange }) => {
       return;
     }
 
-    onChange([...data, value]);
+    onChange?.([...skills, value]);
     setSkillInput("");
   };
 
   const removeSkill = (index) => {
-    const updated = data.filter((_, i) => i !== index);
-    onChange(updated);
+    const updated = skills.filter((_, i) => i !== index);
+    onChange?.(updated);
   };
 
   const handleKeyDown = (e) => {
@@ -58,6 +59,7 @@ const SkillsForm = ({ data = [], onChange }) => {
           <button
             type="button"
             onClick={addSkill}
+            disabled={!skillInput.trim()}
             className="flex items-center gap-2 px-3 py-2 text-sm bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors"
           >
             <Plus className="size-4" />
@@ -65,7 +67,7 @@ const SkillsForm = ({ data = [], onChange }) => {
           </button>
         </div>
 
-        {data.length === 0 ? (
+        {skills.length === 0 ? (
           <div className="text-center py-8 text-gray-500">
             <Sparkles className="w-12 h-12 mx-auto mb-3 text-gray-300" />
             <p>No skills added yet.</p>
@@ -73,7 +75,7 @@ const SkillsForm = ({ data = [], onChange }) => {
           </div>
         ) : (
           <div className="flex flex-wrap gap-2">
-            {data.map((skill, index) => (
+            {skills.map((skill, index) => (
               <span
                 key={`${skill}-${index}`}
                 className="inline-flex items-center gap-2 px-3 py-1.5 text-sm rounded-full border border-gray-200 bg-gray-50"

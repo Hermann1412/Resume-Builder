@@ -11,6 +11,10 @@ import {
   User,
   ChevronLeft,
   ChevronRight,
+  Share2Icon,
+  EyeIcon,
+  EyeOffIcon,
+  DownloadIcon,
 } from "lucide-react";
 import PersonnalInfoForm from "../components/PersonalInfoForm";
 import ResumePreview from "../components/resumePreview";
@@ -76,6 +80,25 @@ const ResumeBuilder = () => {
   useEffect(() => {
     loadExistingResume();
   }, [resumeId]);
+
+  const changeResumeVisibiliy = async () => {
+    setResumeData ({...resumeData, public: !resumeData.public})
+  }
+
+  const handleShare = () => {
+    const frontendUrl = window.location.href.split('/app/')[0];
+    const resumeUrl = frontendUrl + '/view/' + resumeData._id;
+
+    if (navigator.share) {
+      navigator.share({url: resumeUrl, text: "My Resume", })
+    }else {
+      alert('share not suported on this browser.')
+    }
+  }
+
+  const downloadResume = () => {
+    window.print();
+  }
 
   return (
     <div>
@@ -152,19 +175,32 @@ const ResumeBuilder = () => {
                   />
                 )}
               </div>
-
+                <button className="bg-linear-to-br from-red-100 to red-red-200 ring-red-300 text-red-600 ring hover:ring-red-green-400 transition-all rounded-md px-6 py-2 mt-6 text-sm">
+                  Save changes
+                </button>
             </div>
             
           </div>
 
           {/*Right Panel - Preview */}
-          <div className="lg:col-span-7 max-lg:mt-6 flex justify-center">
-            <div>
-              {/* ---buttons --- */}
+          <div className="lg:col-span-7 max-lg:mt-6">
+            <div className="relative w-full">
+              <ResumePreview data={resumeData} template={resumeData.template} accentColor={resumeData.accent_color}/>
+              <div className="absolute bottom-3 left-0 right-0 flex items-center justify-end gap-2">
+                {resumeData.public && (
+                  <button onClick={handleShare} className="flex items-center p-2 px-4 gap-2 text-xs bg-linear-to-br from-blue-100 to-blue-200 text-blue-600 rounded-lg ring ring-blue-300 hover:ring-blue-400 transition-colors">
+                    <Share2Icon className="size-4"/>
+                  </button>
+                )}
+                <button onClick={changeResumeVisibiliy} className="flex items-center p-2 px-4 gap-2 text-xs bg-linear-to-br from-blue-100 to-blue-200 text-blue-600 rounded-lg ring ring-blue-300 hover:ring-blue-400 transition-colors">
+                  {resumeData.public ? <EyeIcon className="size-4"/> : <EyeOffIcon className="size-4"/>}
+                  {resumeData.public ? 'Public' : 'Private'}
+                </button>
+                <button onClick={downloadResume} className="flex items-center p-2 px-4 gap-2 text-xs bg-linear-to-br from-gray-100 to-gray-200 text-gray-600 rounded-lg ring ring-gray-300 hover:ring-gray-400 transition-colors">
+                  <DownloadIcon className="size-4"/> Download
+                </button>
+              </div>
             </div>
-
-            <ResumePreview data={resumeData} template={resumeData.template} accentColor={resumeData.accent_color}/>
-
           </div>
         </div>
 
