@@ -509,20 +509,10 @@ For issues, feature requests, or contributions, please submit via:
 
 ---
 
-## 📄 License
-
-This project is licensed under the MIT License. See LICENSE file for details.
-
----
-
 ## 🙏 Acknowledgments
 
 - Built with modern web technologies and best practices
 - Inspired by professional resume builders
-- Thanks to all contributors and users
-
----
-
-**Last Updated:** April 4, 2026  
+  
 **Status:** ✅ Active & Deployed
 
