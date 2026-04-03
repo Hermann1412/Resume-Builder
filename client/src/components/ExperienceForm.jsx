@@ -1,9 +1,18 @@
 import React from "react";
-import { Briefcase, Plus, Sparkles, Trash2 } from "lucide-react";
+import { Briefcase, Loader2, Plus, Sparkles, Trash2 } from "lucide-react";
+import { useSelector } from "react-redux";
+import api from "../configs/api";
+import toast from "react-hot-toast";
+import { useState } from "react";
 
 const ExperienceForm = ({ data, onChange }) => {
-  const addExperience = () => {
-    const newExperience = {
+  const safeData = Array.isArray(data) ? data : [];
+
+  const { token } = useSelector((state) => state.auth);
+  const [generatingIndex, setGeneratingIndex] = useState(-1);
+
+const addExperience = () => {
+  const newExperience = {
       company: "",
       position: "",
       start_date: "",
@@ -11,19 +20,41 @@ const ExperienceForm = ({ data, onChange }) => {
       description: "",
       is_current: false,
     };
-    onChange([...data, newExperience]);
-  };
+    onChange([...safeData, newExperience]);
+};
 
   const removedExperience = (index) => {
-    const updated = data.filter((_, i) => i !== index);
+    const updated = safeData.filter((_, i) => i !== index);
     onChange(updated);
   };
 
   const updateExperience = (index, field, value) => {
-    const updated = [...data];
+    const updated = [...safeData];
     updated[index] = { ...updated[index], [field]: value };
     onChange(updated);
   };
+
+  const generateDescription = async (index) => {
+    setGeneratingIndex(index);
+    const experience = safeData[index];
+    const payload = {
+      userContent: experience?.description || "",
+      position: experience?.position || "",
+      company: experience?.company || "",
+    };
+
+    try {
+      const { data } = await api.post('/api/ai/enhance-job-desc', payload, { headers: { Authorization: token } });
+      updateExperience(index, "description", data.enhancedContent);
+      if (data?.fallback) {
+        toast(data?.message || "Applied local enhancement fallback.");
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.message || error.message);
+    }finally {
+      setGeneratingIndex(-1);
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -46,7 +77,7 @@ const ExperienceForm = ({ data, onChange }) => {
         </button>
       </div>
 
-      {data.length === 0 ? (
+      {safeData.length === 0 ? (
         <div className="text-center py-8 text-gray-500">
           <Briefcase className="w-12 h-12 mx-auto mb-3 text-gray-300" />
           <p>No work experience added yet.</p>
@@ -54,7 +85,7 @@ const ExperienceForm = ({ data, onChange }) => {
         </div>
       ) : (
         <div className="space-y-4">
-          {data.map((experience, index) => (
+          {safeData.map((experience, index) => (
             <div
               key={index}
               className="p-4 border border-gray-200 rounded-lg space-y-3"
@@ -132,8 +163,12 @@ const ExperienceForm = ({ data, onChange }) => {
                   <label className="text-sm font-medium text-gray-700">
                     Job Description
                   </label>
-                  <button className="flex items-center gap-1 px py-1 text-xs bg-purple-100 text-purple-700 rounded hover:bg-purple-200 transition-colors disabled:opacity-50">
-                    <Sparkles className="w-3 h-3" />
+                  <button onClick={()=> generateDescription(index)} disabled={generatingIndex === index || !experience.position || !experience.company} className="flex items-center gap-1 px py-1 text-xs bg-purple-100 text-purple-700 rounded hover:bg-purple-200 transition-colors disabled:opacity-50">
+                    {generatingIndex == index? (
+                      <Loader2 className="size-3 animate-spin"/>
+                    ):(
+                    <Sparkles className="w-3 h-3" />                      
+                    )}
                     Enhance with AI
                   </button>
                 </div>

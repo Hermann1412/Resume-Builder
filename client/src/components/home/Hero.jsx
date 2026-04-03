@@ -1,7 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Hero = () => {
+  const { user } = useSelector((state) => state.auth);
+
   const [menuOpen, setMenuOpen] = React.useState(false);
 
   const companiesLogo = [
@@ -113,7 +116,7 @@ const Hero = () => {
       <div className="min-h-screen pb-20">
         {/* Navbar */}
         <nav className="z-50 flex items-center justify-between w-full py-4 px-6 md:px-16 lg:px-24 xl:px-40 text-sm">
-          <a href="https://prebuiltui.com">
+          <a href="/">
             <img src="/logo.svg" alt="logo" className="h-11 w-auto" />
           </a>
 
@@ -124,9 +127,6 @@ const Hero = () => {
             <a href="#features" className="hover:text-red-600 transition">
               Features
             </a>
-            <a href="#testimonials" className="hover:text-red-600 transition">
-              Testimonials
-            </a>
             <a href="#cta" className="hover:text-red-600 transition">
               Contact
             </a>
@@ -135,15 +135,18 @@ const Hero = () => {
           <div className="flex gap-2">
             <Link
               to="/app?state=register"
-              className="hidden md:block px-6 py-2 bg-red-500 hover:bg-red-700 active:scale-95 transition-all rounded-full text-white"
+              className="hidden md:block px-6 py-2 bg-red-500 hover:bg-red-700 active:scale-95 transition-all rounded-full text-white" hidden={user}
             >
               Get started
             </Link>
             <Link
               to="/app?state=login"
-              className="hidden md:block px-6 py-2 border active:scale-95 hover:bg-slate-50 transition-all rounded-full text-slate-700 hover:text-slate-900"
+              className="hidden md:block px-6 py-2 border active:scale-95 hover:bg-slate-50 transition-all rounded-full text-slate-700 hover:text-slate-900" hidden={user}
             >
               Login
+            </Link>
+            <Link to="/app" className="hidden md:block px-6 py-2 border active:scale-95 hover:bg-slate-50 transition-all rounded-full text-slate-700 hover:text-slate-900" hidden={!user}>
+              Dashboard
             </Link>
           </div>
 
@@ -175,10 +178,7 @@ const Hero = () => {
           <a href="#features" className="text-white">
             Features
           </a>
-          <a href="#testimonials" className="text-white">
-            Testimonials
-          </a>
-          <a href="#contact" className="text-white">
+          <a href="#cta" className="text-white">
             Contact
           </a>
           <button

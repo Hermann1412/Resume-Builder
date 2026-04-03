@@ -1,4 +1,6 @@
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin, Github, FolderOpen } from "lucide-react";
+import { getProjectTechMeta } from "../projectTechCatalog";
+import { getProjectTechMetaFromValue } from "../projectTechCatalog";
 
 const MinimalImageTemplate = ({ data, accentColor }) => {
     const formatDate = (dateStr) => {
@@ -67,6 +69,18 @@ const MinimalImageTemplate = ({ data, accentColor }) => {
                                     <span>{data.personal_info.location}</span>
                                 </div>
                             )}
+                            {data.personal_info?.github && (
+                                <div className="flex items-center gap-2">
+                                    <Github size={14} style={{ color: accentColor }} />
+                                    <span className="break-all">{data.personal_info.github}</span>
+                                </div>
+                            )}
+                            {(data.personal_info?.portfolio || data.personal_info?.website) && (
+                                <div className="flex items-center gap-2">
+                                    <FolderOpen size={14} style={{ color: accentColor }} />
+                                    <span className="break-all">{data.personal_info.portfolio || data.personal_info.website}</span>
+                                </div>
+                            )}
                         </div>
                     </section>
 
@@ -98,7 +112,14 @@ const MinimalImageTemplate = ({ data, accentColor }) => {
                             </h2>
                             <ul className="space-y-1 text-sm">
                                 {data.skills.map((skill, index) => (
-                                    <li key={index}>{skill}</li>
+                                    <li key={index} className="inline-flex items-center gap-1.5 mr-2 mb-1 px-2 py-0.5 rounded bg-gray-100">
+                                        {(() => {
+                                            const meta = getProjectTechMetaFromValue(skill);
+                                            const Icon = meta.Icon;
+                                            return <Icon className="size-3.5" />;
+                                        })()}
+                                        {skill}
+                                    </li>
                                 ))}
                             </ul>
                         </section>
@@ -167,6 +188,39 @@ const MinimalImageTemplate = ({ data, accentColor }) => {
                                         <p className="text-sm mb-1" style={{ color: accentColor }} >
                                             {project.type}
                                         </p>
+                                        {Array.isArray(project.technologies) && project.technologies.length > 0 && (
+                                            <div className="mb-2 flex flex-wrap gap-1.5">
+                                                {project.technologies.map((techKey) => {
+                                                    const techMeta = getProjectTechMeta(techKey);
+                                                    const Icon = techMeta.Icon;
+                                                    return (
+                                                        <span
+                                                            key={`${index}-${techKey}`}
+                                                            className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-gray-100 text-xs text-gray-700"
+                                                        >
+                                                            <Icon className="size-3" />
+                                                            {techMeta.label}
+                                                        </span>
+                                                    );
+                                                })}
+                                            </div>
+                                        )}
+                                        {(project.github || project.portfolio) && (
+                                            <div className="mb-2 flex flex-wrap gap-3 text-xs text-zinc-600">
+                                                {project.github && (
+                                                    <a href={project.github} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 hover:underline">
+                                                        <Github className="size-3.5" />
+                                                        <span>GitHub</span>
+                                                    </a>
+                                                )}
+                                                {project.portfolio && (
+                                                    <a href={project.portfolio} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 hover:underline">
+                                                        <FolderOpen className="size-3.5" />
+                                                        <span>Portfolio</span>
+                                                    </a>
+                                                )}
+                                            </div>
+                                        )}
                                         {project.description && (
                                             <ul className="list-disc list-inside text-sm text-zinc-700  space-y-1">
                                                 {project.description.split("\n").map((line, i) => (

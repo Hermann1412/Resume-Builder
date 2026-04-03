@@ -1,8 +1,12 @@
 import React from "react";
 import { Lock, Mail, User2Icon } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { login } from "../app/features/authSlice";
+import toast from "react-hot-toast";
+import api from "../configs/api";
 
 const Login = () => {
-
+    const dispatch = useDispatch();
   const query = new URLSearchParams(window.location.search);
   const urlState = query.get('state')
   const [state, setState] = React.useState(urlState || "login");
@@ -12,9 +16,21 @@ const Login = () => {
     email: "",
     password: "",
   });
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    try {
+         const{data} = await api.post(`/api/users/${state}`, formData)
+         dispatch(login(data))
+         localStorage.setItem("token", data.token);
+         toast.success(data.message)
+    }catch (error) {
+      toast.error(error?.response?.data?.message || "Invalid email or password")
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e) => {
@@ -76,9 +92,10 @@ const Login = () => {
         </div>
         <button
           type="submit"
-          className="mt-2 w-full h-11 rounded-full text-white bg-red-500 hover:opacity-90 transition-opacity"
+          disabled={isSubmitting}
+          className="mt-2 w-full h-11 rounded-full text-white bg-red-500 hover:opacity-90 transition-opacity disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          {state === "login" ? "Login" : "Sign up"}
+          {isSubmitting ? "Please wait..." : state === "login" ? "Login" : "Sign up"}
         </button>
         <p
           onClick={() =>
@@ -89,9 +106,9 @@ const Login = () => {
           {state === "login"
             ? "Don't have an account?"
             : "Already have an account?"}{" "}
-          <a href="#" className="text-red-500 hover:underline">
+          <button type="button" className="text-red-500 hover:underline">
             click here
-          </a>
+          </button>
         </p>
       </form>
     </div>

@@ -1,4 +1,6 @@
-import { Mail, Phone, MapPin, Linkedin, Globe } from "lucide-react";
+import { Mail, Phone, MapPin, Linkedin, Github, FolderOpen } from "lucide-react";
+import { getProjectTechMeta } from "../projectTechCatalog";
+import { getProjectTechMetaFromValue } from "../projectTechCatalog";
 
 const ModernTemplate = ({ data, accentColor }) => {
 	const formatDate = (dateStr) => {
@@ -38,15 +40,21 @@ const ModernTemplate = ({ data, accentColor }) => {
 						</div>
 					)}
 					{data.personal_info?.linkedin && (
-						<a target="_blank" href={data.personal_info?.linkedin} className="flex items-center gap-2">
+						<a target="_blank" rel="noreferrer" href={data.personal_info?.linkedin} className="flex items-center gap-2">
 							<Linkedin className="size-4" />
 							<span className="break-all text-xs">{data.personal_info.linkedin.split("https://www.")[1] ? data.personal_info.linkedin.split("https://www.")[1] : data.personal_info.linkedin}</span>
 						</a>
 					)}
-					{data.personal_info?.website && (
-						<a target="_blank" href={data.personal_info?.website} className="flex items-center gap-2">
-							<Globe className="size-4" />
-							<span className="break-all text-xs">{data.personal_info.website.split("https://")[1] ? data.personal_info.website.split("https://")[1] : data.personal_info.website}</span>
+					{data.personal_info?.github && (
+						<a target="_blank" rel="noreferrer" href={data.personal_info?.github} className="flex items-center gap-2">
+							<Github className="size-4" />
+							<span className="break-all text-xs">{data.personal_info.github.split("https://")[1] ? data.personal_info.github.split("https://")[1] : data.personal_info.github}</span>
+						</a>
+					)}
+					{(data.personal_info?.portfolio || data.personal_info?.website) && (
+						<a target="_blank" rel="noreferrer" href={data.personal_info?.portfolio || data.personal_info?.website} className="flex items-center gap-2">
+							<FolderOpen className="size-4" />
+							<span className="break-all text-xs">{(data.personal_info.portfolio || data.personal_info.website).split("https://")[1] ? (data.personal_info.portfolio || data.personal_info.website).split("https://")[1] : (data.personal_info.portfolio || data.personal_info.website)}</span>
 						</a>
 					)}
 				</div>
@@ -109,11 +117,44 @@ const ModernTemplate = ({ data, accentColor }) => {
 									<div className="flex justify-between items-start">
 										<div>
 											<h3 className="text-lg font-medium text-gray-900">{p.name}</h3>
+											{Array.isArray(p.technologies) && p.technologies.length > 0 && (
+												<div className="mt-2 flex flex-wrap gap-1.5">
+													{p.technologies.map((techKey) => {
+														const techMeta = getProjectTechMeta(techKey);
+														const Icon = techMeta.Icon;
+														return (
+															<span
+																key={`${index}-${techKey}`}
+																className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-gray-100 text-xs text-gray-700"
+															>
+																<Icon className="size-3" />
+																{techMeta.label}
+															</span>
+														);
+													})}
+												</div>
+											)}
 										</div>
 									</div>
 									{p.description && (
 										<div className="text-gray-700 leading-relaxed text-sm mt-3">
 											{p.description}
+										</div>
+									)}
+									{(p.github || p.portfolio) && (
+										<div className="mt-2 flex flex-wrap gap-3 text-xs text-gray-600">
+											{p.github && (
+												<a href={p.github} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 hover:underline">
+													<Github className="size-3.5" />
+													<span>GitHub</span>
+												</a>
+											)}
+											{p.portfolio && (
+												<a href={p.portfolio} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 hover:underline">
+													<FolderOpen className="size-3.5" />
+													<span>Portfolio</span>
+												</a>
+											)}
 										</div>
 									)}
 								</div>
@@ -158,9 +199,14 @@ const ModernTemplate = ({ data, accentColor }) => {
 								{data.skills.map((skill, index) => (
 									<span
 										key={index}
-										className="px-3 py-1 text-sm text-white rounded-full"
+										className="inline-flex items-center gap-1.5 px-3 py-1 text-sm text-white rounded-full"
 										style={{ backgroundColor: accentColor }}
 									>
+										{(() => {
+											const meta = getProjectTechMetaFromValue(skill);
+											const Icon = meta.Icon;
+											return <Icon className="size-3.5" />;
+										})()}
 										{skill}
 									</span>
 								))}

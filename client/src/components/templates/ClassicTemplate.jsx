@@ -1,4 +1,6 @@
-import { Mail, Phone, MapPin, Linkedin, Globe } from "lucide-react";
+import { Mail, Phone, MapPin, Linkedin, Github, FolderOpen } from "lucide-react";
+import { getProjectTechMeta } from "../projectTechCatalog";
+import { getProjectTechMetaFromValue } from "../projectTechCatalog";
 
 const ClassicTemplate = ({ data, accentColor }) => {
     const formatDate = (dateStr) => {
@@ -43,11 +45,17 @@ const ClassicTemplate = ({ data, accentColor }) => {
                             <span className="break-all">{data.personal_info.linkedin}</span>
                         </div>
                     )}
-                    {data.personal_info?.website && (
-                        <div className="flex items-center gap-1">
-                            <Globe className="size-4" />
-                            <span className="break-all">{data.personal_info.website}</span>
-                        </div>
+                    {data.personal_info?.github && (
+                        <a href={data.personal_info.github} target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:underline">
+                            <Github className="size-4" />
+                            <span className="break-all">{data.personal_info.github}</span>
+                        </a>
+                    )}
+                    {(data.personal_info?.portfolio || data.personal_info?.website) && (
+                        <a href={data.personal_info.portfolio || data.personal_info.website} target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:underline">
+                            <FolderOpen className="size-4" />
+                            <span className="break-all">{data.personal_info.portfolio || data.personal_info.website}</span>
+                        </a>
                     )}
                 </div>
             </header>
@@ -104,7 +112,40 @@ const ClassicTemplate = ({ data, accentColor }) => {
                             <div key={index} className="flex justify-between items-start border-l-3 border-gray-300 pl-6">
                                 <div>
                                     <li className="font-semibold text-gray-800 ">{proj.name}</li>
+                                    {Array.isArray(proj.technologies) && proj.technologies.length > 0 && (
+                                        <div className="mt-1.5 flex flex-wrap gap-1.5">
+                                            {proj.technologies.map((techKey) => {
+                                                const techMeta = getProjectTechMeta(techKey);
+                                                const Icon = techMeta.Icon;
+                                                return (
+                                                    <span
+                                                        key={`${index}-${techKey}`}
+                                                        className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-gray-100 text-xs text-gray-700"
+                                                    >
+                                                        <Icon className="size-3" />
+                                                        {techMeta.label}
+                                                    </span>
+                                                );
+                                            })}
+                                        </div>
+                                    )}
                                     <p className="text-gray-600">{proj.description}</p>
+                                    {(proj.github || proj.portfolio) && (
+                                        <div className="mt-2 flex flex-wrap gap-3 text-xs text-gray-600">
+                                            {proj.github && (
+                                                <a href={proj.github} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 hover:underline">
+                                                    <Github className="size-3.5" />
+                                                    <span>GitHub</span>
+                                                </a>
+                                            )}
+                                            {proj.portfolio && (
+                                                <a href={proj.portfolio} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 hover:underline">
+                                                    <FolderOpen className="size-3.5" />
+                                                    <span>Portfolio</span>
+                                                </a>
+                                            )}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         ))}
@@ -147,9 +188,17 @@ const ClassicTemplate = ({ data, accentColor }) => {
 
                     <div className="flex gap-4 flex-wrap">
                         {data.skills.map((skill, index) => (
-                            <div key={index} className="text-gray-700">
-                                • {skill}
-                            </div>
+                            <span
+                                key={index}
+                                className="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-gray-100 text-gray-700 text-sm"
+                            >
+                                {(() => {
+                                    const meta = getProjectTechMetaFromValue(skill);
+                                    const Icon = meta.Icon;
+                                    return <Icon className="size-3.5" />;
+                                })()}
+                                {skill}
+                            </span>
                         ))}
                     </div>
                 </section>

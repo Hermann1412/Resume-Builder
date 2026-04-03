@@ -2,38 +2,37 @@ import React from "react";
 
 const CallToAction = () => {
   return (
-    <div
+    <section
       id="cta"
-      className="border-y border-dashed border-slate-200 w-full max-w-5xl mx-auto px-10 sm:px-16 mt-28"
+      className="w-full max-w-6xl mx-auto px-6 md:px-10 mt-20"
     >
-      <div className="flex flex-col md:flex-row text-center md:text-left items-center justify-between gap-8 px-3 md:px-10 border-x border-dashed border-slate-200 py-16 sm:py-20 -mt-10 -mb-10 w-full">
-        <p className="text-xl font-medium max-w-md text-slate-800">
-          Build a Professional Resume That's Make the Difference and Get You
-          Hired.
-        </p>
-        <a
-          href="https://prebuiltui.com"
-          className="flex items-center gap-2 rounded py-3 px-8 bg-red-600 hover:bg-red-700 transition text-white"
-        >
-          <span>Star On Github</span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="size-4.5"
-          >
-            <path d="M5 12h14" />
-            <path d="m12 5 7 7-7 7" />
-          </svg>
-        </a>
+      <div className="rounded-3xl border border-slate-200 bg-gradient-to-br from-white via-rose-50 to-amber-50 p-8 md:p-12 shadow-[0_20px_60px_-40px_rgba(15,23,42,0.45)]">
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
+          <div className="max-w-2xl">
+            <p className="text-sm uppercase tracking-[0.22em] text-slate-500">
+              Built For Real Careers
+            </p>
+            <h2 className="mt-3 text-3xl md:text-4xl font-semibold text-slate-900 leading-tight">
+              This is not a generic builder. It is your story, your voice, your next move.
+            </h2>
+            <p className="mt-4 text-slate-600 text-base md:text-lg">
+              Create a resume that sounds like you, looks modern, and stays focused on what hiring managers actually care about.
+            </p>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-3">
+            <a
+              href="https://github.com/Hermann1412"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center justify-center rounded-xl px-6 py-3 border border-slate-300 text-slate-700 hover:bg-white transition"
+            >
+              View My GitHub
+            </a>
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 

@@ -2,11 +2,11 @@ import React from 'react'
 
 const Loader = () => {
   return (
-    <div className='flex items-center justify h-screen'>
-      <div className='size-12 border-3 border-gray-400 border-t-transparent rounded-full animate-spin'>
-
+    <div className='flex min-h-screen items-center justify-center'>
+      <div className='flex items-center gap-3 text-slate-500'>
+        <div className='size-10 border-4 border-gray-300 border-t-transparent rounded-full animate-spin' />
+        <span className='text-sm'>Loading...</span>
       </div>
-
     </div>
   )
 }

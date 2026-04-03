@@ -1,4 +1,8 @@
 
+import { Github, FolderOpen } from "lucide-react";
+import { getProjectTechMeta } from "../projectTechCatalog";
+import { getProjectTechMetaFromValue } from "../projectTechCatalog";
+
 const MinimalTemplate = ({ data, accentColor }) => {
     const formatDate = (dateStr) => {
         if (!dateStr) return "";
@@ -24,8 +28,17 @@ const MinimalTemplate = ({ data, accentColor }) => {
                     {data.personal_info?.linkedin && (
                         <span className="break-all">{data.personal_info.linkedin}</span>
                     )}
-                    {data.personal_info?.website && (
-                        <span className="break-all">{data.personal_info.website}</span>
+                    {data.personal_info?.github && (
+                        <a href={data.personal_info.github} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 break-all">
+                            <Github className="size-4" />
+                            <span>{data.personal_info.github}</span>
+                        </a>
+                    )}
+                    {(data.personal_info?.portfolio || data.personal_info?.website) && (
+                        <a href={data.personal_info.portfolio || data.personal_info.website} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 break-all">
+                            <FolderOpen className="size-4" />
+                            <span>{data.personal_info.portfolio || data.personal_info.website}</span>
+                        </a>
                     )}
                 </div>
             </header>
@@ -78,7 +91,40 @@ const MinimalTemplate = ({ data, accentColor }) => {
                         {data.project.map((proj, index) => (
                             <div key={index} className="flex flex-col gap-2 justify-between items-baseline">
                                 <h3 className="text-lg font-medium ">{proj.name}</h3>
+                                {Array.isArray(proj.technologies) && proj.technologies.length > 0 && (
+                                    <div className="flex flex-wrap gap-1.5">
+                                        {proj.technologies.map((techKey) => {
+                                            const techMeta = getProjectTechMeta(techKey);
+                                            const Icon = techMeta.Icon;
+                                            return (
+                                                <span
+                                                    key={`${index}-${techKey}`}
+                                                    className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-gray-100 text-xs text-gray-700"
+                                                >
+                                                    <Icon className="size-3" />
+                                                    {techMeta.label}
+                                                </span>
+                                            );
+                                        })}
+                                    </div>
+                                )}
                                 <p className="text-gray-600">{proj.description}</p>
+                                {(proj.github || proj.portfolio) && (
+                                    <div className="mt-1 flex flex-wrap gap-3 text-xs text-gray-600">
+                                        {proj.github && (
+                                            <a href={proj.github} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 hover:underline">
+                                                <Github className="size-3.5" />
+                                                <span>GitHub</span>
+                                            </a>
+                                        )}
+                                        {proj.portfolio && (
+                                            <a href={proj.portfolio} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 hover:underline">
+                                                <FolderOpen className="size-3.5" />
+                                                <span>Portfolio</span>
+                                            </a>
+                                        )}
+                                    </div>
+                                )}
                             </div>
                         ))}
                     </div>
@@ -118,8 +164,20 @@ const MinimalTemplate = ({ data, accentColor }) => {
                         Skills
                     </h2>
 
-                    <div className="text-gray-700">
-                        {data.skills.join(" • ")}
+                    <div className="flex flex-wrap gap-2 text-gray-700">
+                        {data.skills.map((skill, index) => (
+                            <span
+                                key={index}
+                                className="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-gray-100 text-sm"
+                            >
+                                {(() => {
+                                    const meta = getProjectTechMetaFromValue(skill);
+                                    const Icon = meta.Icon;
+                                    return <Icon className="size-3.5" />;
+                                })()}
+                                {skill}
+                            </span>
+                        ))}
                     </div>
                 </section>
             )}
