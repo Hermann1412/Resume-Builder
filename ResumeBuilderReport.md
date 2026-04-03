@@ -505,7 +505,7 @@ All templates support:
 
 For issues, feature requests, or contributions, please submit via:
 - GitHub Issues
-- Email: [your-email@example.com]
+- Email: [www.ngendahermann14@gmail.com]
 
 ---
 
