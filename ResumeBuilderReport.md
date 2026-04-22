@@ -1,7 +1,8 @@
 # 📋 Resume Builder - Project Report
 
 **Author:** Hermann N'zi Ngenda  
-**Deployment:** [https://resume-builder1412.vercel.app/](https://resume-builder1412.vercel.app/)  
+**Frontend:** Cloudflare Pages  
+**Backend:** [https://resume-builder-40jg.onrender.com](https://resume-builder-40jg.onrender.com)  
 **Project Date:** 2026
 
 ---
@@ -83,8 +84,8 @@
 
 ### DevOps & Deployment
 ```
-🌐 Vercel                   - Frontend Hosting (client/)
-📦 Render/Railway           - Backend Hosting (server/)
+🌐 Cloudflare Pages         - Frontend Hosting (client/)
+📦 Render                   - Backend Hosting (server/)
 🗄️  MongoDB Atlas            - Cloud Database
 ```
 
@@ -360,24 +361,25 @@ npm run ai-diagnose      # Check Gemini API
 
 ## 🌐 Deployment
 
-### Frontend Deployment (Vercel)
+### Frontend Deployment (Cloudflare Pages)
 
 1. **Push code to GitHub**
    ```bash
    git push origin main
    ```
 
-2. **Connect to Vercel**
-   - Visit [https://vercel.com](https://vercel.com)
+2. **Connect to Cloudflare Pages**
+   - Visit [https://pages.cloudflare.com](https://pages.cloudflare.com)
    - Import your GitHub repository
    - Set **Root Directory** to `client`
-   - Add environment variable: `VITE_BASE_URL` = your backend API URL
+   - Set **Framework preset** to `React (Vite)`
+   - Set **Build command** to `npm run build`
+   - Set **Build output directory** to `dist`
+   - Add environment variable: `VITE_BASE_URL` = `https://resume-builder-40jg.onrender.com`
 
 3. **Deploy**
-   - Click "Deploy"
+   - Click "Save and Deploy"
    - Your app will be live within minutes
-
-**Live URL:** [https://resume-builder1412.vercel.app/](https://resume-builder1412.vercel.app/)
 
 ### Backend Deployment (Render/Railway)
 
@@ -514,6 +516,6 @@ For issues, feature requests, or contributions, please submit via:
 - Built with modern web technologies and best practices
 - Inspired by professional resume builders
   
-**Status:** ✅ Active & Deployed
-- Link : [https://resume-builder1412.vercel.app/]
+**Status:** ✅ Active & Deployed  
+**Backend:** [https://resume-builder-40jg.onrender.com](https://resume-builder-40jg.onrender.com)
 
