@@ -1,7 +1,7 @@
 # 📋 Resume Builder - Project Report
 
 **Author:** Hermann N'zi Ngenda  
-**Frontend:** Cloudflare Pages  
+**Frontend:** [https://resume-builder-bdm.pages.dev/](https://resume-builder-bdm.pages.dev/)  
 **Backend:** [https://resume-builder-40jg.onrender.com](https://resume-builder-40jg.onrender.com)  
 **Project Date:** 2026
 
@@ -517,5 +517,6 @@ For issues, feature requests, or contributions, please submit via:
 - Inspired by professional resume builders
   
 **Status:** ✅ Active & Deployed  
+**Live:** [https://resume-builder-bdm.pages.dev/](https://resume-builder-bdm.pages.dev/)  
 **Backend:** [https://resume-builder-40jg.onrender.com](https://resume-builder-40jg.onrender.com)
 
