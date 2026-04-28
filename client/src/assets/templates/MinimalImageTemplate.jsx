@@ -1,4 +1,4 @@
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin, Github, Globe } from "lucide-react";
 
 const MinimalImageTemplate = ({ data, accentColor }) => {
     const formatDate = (dateStr) => {
@@ -50,22 +50,34 @@ const MinimalImageTemplate = ({ data, accentColor }) => {
                         </h2>
                         <div className="space-y-2 text-sm">
                             {data.personal_info?.phone && (
-                                <div className="flex items-center gap-2">
+                                <a href={`tel:${data.personal_info.phone}`} className="flex items-center gap-2 hover:underline">
                                     <Phone size={14} style={{ color: accentColor }} />
                                     <span>{data.personal_info.phone}</span>
-                                </div>
+                                </a>
                             )}
                             {data.personal_info?.email && (
-                                <div className="flex items-center gap-2">
-                                    <Mail size={14} style={{ color: accentColor }} />
-                                    <span>{data.personal_info.email}</span>
-                                </div>
+                                <a href={`mailto:${data.personal_info.email}`} className="flex items-start gap-2 hover:underline">
+                                    <Mail size={14} className="mt-0.5 shrink-0" style={{ color: accentColor }} />
+                                    <span className="break-all">{data.personal_info.email}</span>
+                                </a>
                             )}
                             {data.personal_info?.location && (
                                 <div className="flex items-center gap-2">
-                                    <MapPin size={14} style={{ color: accentColor }} />
+                                    <MapPin size={14} className="shrink-0" style={{ color: accentColor }} />
                                     <span>{data.personal_info.location}</span>
                                 </div>
+                            )}
+                            {data.personal_info?.github && (
+                                <a href={data.personal_info.github} target="_blank" rel="noreferrer" className="flex items-start gap-2 hover:underline">
+                                    <Github size={14} className="mt-0.5 shrink-0" style={{ color: accentColor }} />
+                                    <span className="break-all">{data.personal_info.github.replace("https://", "")}</span>
+                                </a>
+                            )}
+                            {(data.personal_info?.portfolio || data.personal_info?.website) && (
+                                <a href={data.personal_info.portfolio || data.personal_info.website} target="_blank" rel="noreferrer" className="flex items-start gap-2 hover:underline">
+                                    <Globe size={14} className="mt-0.5 shrink-0" style={{ color: accentColor }} />
+                                    <span className="break-all">{(data.personal_info.portfolio || data.personal_info.website).replace("https://", "")}</span>
+                                </a>
                             )}
                         </div>
                     </section>
