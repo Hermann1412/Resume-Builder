@@ -194,7 +194,36 @@ const ResumeBuilder = () => {
   };
 
   const downloadResume = () => {
-    window.print();
+    const resumeEl = document.getElementById("resume-preview");
+    if (!resumeEl) return;
+
+    const styleLinks = Array.from(document.querySelectorAll('link[rel="stylesheet"]'))
+      .map((link) => `<link rel="stylesheet" href="${link.href}">`)
+      .join("");
+    const inlineStyles = Array.from(document.querySelectorAll("style"))
+      .map((style) => `<style>${style.textContent}</style>`)
+      .join("");
+
+    const html = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  ${styleLinks}
+  ${inlineStyles}
+  <style>
+    @page { size: letter; margin: 0; }
+    html, body { margin: 0; padding: 0; background: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  </style>
+</head>
+<body>${resumeEl.outerHTML}</body>
+</html>`;
+
+    const printWindow = window.open("", "_blank");
+    printWindow.document.open();
+    printWindow.document.write(html);
+    printWindow.document.close();
+    setTimeout(() => { printWindow.print(); printWindow.close(); }, 500);
   };
 
   const analyzeJobMatch = async () => {

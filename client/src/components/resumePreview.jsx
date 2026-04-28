@@ -28,44 +28,14 @@ const ResumePreview = ({data, template, accentColor, classes = ""}) => {
       
       <style>
         {`
-          @page {
-            size: letter;
-            margin: 0;
-          }
+          @page { size: letter; margin: 0; }
           @media print {
             html, body {
-              margin: 0 !important;
-              padding: 0 !important;
-              width: 100% !important;
-              height: auto !important;
-              overflow: visible !important;
-              background: #fff !important;
-            }
-
-            body {
+              margin: 0;
+              padding: 0;
+              background: #fff;
               -webkit-print-color-adjust: exact;
               print-color-adjust: exact;
-            }
-
-            body * {
-              visibility: hidden !important;
-            }
-
-            #resume-preview,
-            #resume-preview * {
-              visibility: visible !important;
-            }
-
-            #resume-preview {
-              position: absolute !important;
-              top: 0 !important;
-              left: 0 !important;
-              width: 100% !important;
-              margin: 0 !important;
-              padding: 0 !important;
-              border: none !important;
-              box-shadow: none !important;
-              background: #fff !important;
             }
           }
         `}
