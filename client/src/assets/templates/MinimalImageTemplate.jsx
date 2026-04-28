@@ -40,7 +40,7 @@ const MinimalImageTemplate = ({ data, accentColor }) => {
                 </div>
 
                 {/* Left Sidebar */}
-                <aside className="col-span-1 border-r border-zinc-400 p-6 pt-0">
+                <aside className="col-span-1 border-r border-zinc-400 p-6 pt-0 overflow-hidden min-w-0">
 
 
                     {/* Contact */}
@@ -56,9 +56,9 @@ const MinimalImageTemplate = ({ data, accentColor }) => {
                                 </a>
                             )}
                             {data.personal_info?.email && (
-                                <a href={`mailto:${data.personal_info.email}`} className="flex items-start gap-2 hover:underline">
+                                <a href={`mailto:${data.personal_info.email}`} className="flex items-start gap-2 hover:underline min-w-0">
                                     <Mail size={14} className="mt-0.5 shrink-0" style={{ color: accentColor }} />
-                                    <span className="break-all">{data.personal_info.email}</span>
+                                    <span className="break-all min-w-0">{data.personal_info.email}</span>
                                 </a>
                             )}
                             {data.personal_info?.location && (
